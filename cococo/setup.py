@@ -23,6 +23,6 @@ setup(name='cococo',
       author_email='jhutar@redhat.com',
       license='GPLv3+',
       packages=['cococo'],
-      install_requires=[],
+      install_requires=['tabulate', 'difflib', 'csv', 'json'],
       include_package_data=True,
       zip_safe=False)
