@@ -2,7 +2,11 @@
 # -*- coding: UTF-8 -*-
 
 import os
+import requests
+import tempfile
+import tarfile
 import difflib
+import io
 
 import jacoco
 import coveragepy
@@ -20,8 +24,8 @@ class Differ:
     def __init__(self, first, second):
         """Load first and second code coverage report, ensure they are both
            the same type, determine diff header"""
-        self.first = self.guess_type(first)
-        self.second = self.guess_type(second)
+        self.first = self.guess_type(self.prepare(first))
+        self.second = self.guess_type(self.prepare(second))
         assert type(self.first) == type(self.second), \
           "Type of first and second report does not match"
         self.header = ['filename'] + self.first.header
@@ -32,6 +36,35 @@ class Differ:
           % (self.first.directory, type(self.first), \
              self.second.directory, type(self.second))
 
+    def prepare(self, location):
+        """Accepts either directory, tarball or http location of tarball. If
+           tarball is thrown at it, it obtains it and unpacks. Returns
+           directory with unpacked code coverage."""
+        if os.path.isdir(location):
+            return location
+        else:
+            extracted = 0
+            tempdir = tempfile.mkdtemp()
+            # Maybe it is file or something on http://...
+            if os.path.isfile(location):
+                fp = open(location, 'r')
+                tar = tarfile.open(fileobj=fp, mode='r:*')
+            else:
+                fp = requests.get(location)
+                tar = tarfile.open(fileobj=io.BytesIO(fp.content), mode='r:*')
+            # Unzip only files interesting for use. These are markers only now
+            for member in tar.getmembers():
+                for marker in MARKERS.keys():
+                    if member.name.endswith(marker):
+                        tar.extract(member, tempdir)
+                        extracted += 1
+            # If we have extracted succesfully, return directory location
+            if extracted > 0:
+                return tempdir
+            else:
+                raise Exception("Failed to extract expected files for '%s'" % location)
+
+
     def guess_type(self, starting_dir):
         """Return object representing correct type of code coverage report"""
         # Go through whole tree as maybe we have packed the report as
@@ -41,6 +74,7 @@ class Differ:
             for marker in MARKERS:
                 if marker in files:
                     return MARKERS[marker](root)
+        raise Exception("I was not able to determine code coverage report type in '%s'" % starting_dir)
 
     def diff_it(self):
         """Return code coverage numbers per file from first and second
