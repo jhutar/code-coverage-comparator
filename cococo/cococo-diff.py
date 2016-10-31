@@ -60,6 +60,9 @@ for fil, val in differ.diff_it().iteritems():
 print tabulate.tabulate(table, headers=differ.header)
 print
 print "Legend:"
-print "  x/y ... means that value got bigger from first to second report"
-print "  x-y ... means that value did not changed from first to second report"
-print "  x\y ... means that value got smaller from first to second report"
+print "  x%sy ... means that value got bigger from first to second report" % SIGN_UP
+print "  x%sy ... means that value did not changed from first to second report" % SIGN_EQUALS
+print "  x%sy ... means that value got smaller from first to second report" % SIGN_DOWN
+print "  Note: Colour codes depends on how value changed and how is given column"
+print "        change supposed to be interpretter - i.e. 'bigger the better'"
+print "        or 'smaller the better'"
