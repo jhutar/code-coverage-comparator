@@ -1,9 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
+import os
 import sys
 import tabulate
 import cococo
+
+# Signs we are going to use
+SIGN_EQUALS = '-'
+SIGN_UP = '/'
+SIGN_DOWN = '\\'
+if 'LANG' in os.environ and 'utf8' in os.environ['LANG']:
+    SIGN_EQUALS = u'→'
+    SIGN_UP = u'↗'
+    SIGN_DOWN = u'↘'
 
 # Diff two reports
 differ = cococo.Differ(sys.argv[1], sys.argv[2])
@@ -26,11 +36,11 @@ for fil, val in differ.diff_it().iteritems():
     else:
         for a, b in zip(val[0], val[1]):
             if b == a:
-                row.append("%s-%s" % (a, b))
+                row.append("%s%s%s" % (a, SIGN_EQUALS, b))
             elif b > a:
-                row.append("%s/%s" % (a, b))
+                row.append("%s%s%s" % (a, SIGN_UP, b))
             elif b < a:
-                row.append("%s\%s" % (a, b))
+                row.append("%s%s%s" % (a, SIGN_DOWN, b))
 
     table.append(row)
 
