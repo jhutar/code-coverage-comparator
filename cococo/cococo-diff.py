@@ -39,13 +39,21 @@ for fil, val in differ.diff_it().iteritems():
             row.append("-%s" % b)
     # If file was measured in both reports
     else:
-        for a, b in zip(val[0], val[1]):
+        for m, a, b in zip(differ.meaning[1:], val[0], val[1]):
             if b == a:
                 row.append("%s%s%s" % (a, SIGN_EQUALS, b))
             elif b > a:
-                row.append("%s%s%s%s%s" % (COLOR_GREEN, a, SIGN_UP, b, COLOR_END))
+                if m:
+                    c = COLOR_GREEN
+                else:
+                    c = COLOR_RED
+                row.append("%s%s%s%s%s" % (c, a, SIGN_UP, b, COLOR_END))
             elif b < a:
-                row.append("%s%s%s%s%s" % (COLOR_RED, a, SIGN_DOWN, b, COLOR_END))
+                if m:
+                    c = COLOR_RED
+                else:
+                    c = COLOR_GREEN
+                row.append("%s%s%s%s%s" % (c, a, SIGN_DOWN, b, COLOR_END))
 
     table.append(row)
 

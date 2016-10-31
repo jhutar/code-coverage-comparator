@@ -7,10 +7,16 @@ import json
 MARKER = 'status.json'
 
 class CoveragePy(object):
+
+    # Explain what columns in the self.data means
+    header = ['files','statements','excluded','missing','branches',
+              'partial branches','missing branches','coverage [%]']
+    # Explain if "bigger is better" (==True) or "smaller is better"
+    # (==False) for individual columns in self.data
+    meaning = [False,False,True,False,False,False,False,True]
+
     def __init__(self, directory):
         self.directory = directory
-        self.header = ['files','statements','excluded','missing','branches',
-                       'partial branches','missing branches', 'coverage [%]']
         self.data = {}
         # Load data from 'status.json'
         fp = open(os.path.join(self.directory, MARKER), 'r')

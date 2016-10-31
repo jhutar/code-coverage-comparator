@@ -25,6 +25,7 @@ class Differ:
         assert type(self.first) == type(self.second), \
           "Type of first and second report does not match"
         self.header = ['filename'] + self.first.header
+        self.meaning = [None] + self.first.meaning
 
     def __str__(self):
         return "CoCoCo differ for %s (%s) and %s (%s)" \
