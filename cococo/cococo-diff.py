@@ -15,6 +15,11 @@ if 'LANG' in os.environ and 'utf8' in os.environ['LANG']:
     SIGN_UP = u'↗'
     SIGN_DOWN = u'↘'
 
+# Some colours
+COLOR_GREEN = '\033[92m'
+COLOR_RED = '\033[91m'
+COLOR_END = '\033[0m'
+
 # Diff two reports
 differ = cococo.Differ(sys.argv[1], sys.argv[2])
 diff = differ.diff_it()
@@ -38,9 +43,9 @@ for fil, val in differ.diff_it().iteritems():
             if b == a:
                 row.append("%s%s%s" % (a, SIGN_EQUALS, b))
             elif b > a:
-                row.append("%s%s%s" % (a, SIGN_UP, b))
+                row.append("%s%s%s%s%s" % (COLOR_GREEN, a, SIGN_UP, b, COLOR_END))
             elif b < a:
-                row.append("%s%s%s" % (a, SIGN_DOWN, b))
+                row.append("%s%s%s%s%s" % (COLOR_RED, a, SIGN_DOWN, b, COLOR_END))
 
     table.append(row)
 
