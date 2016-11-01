@@ -7,7 +7,7 @@ Here we are comparing two coverage.py reports:
 
 .. code:: sh
 
-    $ cococo/cococo-diff.py https://.../logs/python-coverage-html.tar.gz https://.../logs/python-coverage-html.tar.gz
+    $ ./cococo-diff.py https://.../logs/python-coverage-html.tar.gz https://.../logs/python-coverage-html.tar.gz
     filename                                                             files    statements    excluded    missing    branches    partial branches    missing branches    coverage [%]
     -------------------------------------------------------------------  -------  ------------  ----------  ---------  ----------  ------------------  ------------------  --------------
     /usr/share/rhn/server/handlers/xmlrpc/getMethod.py                   1→1      65→65         0→0         19→19      34→34       11→11               13→13               68→68
