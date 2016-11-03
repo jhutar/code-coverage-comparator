@@ -7,6 +7,7 @@ import tempfile
 import tarfile
 import difflib
 import io
+import collections
 
 import jacoco
 import coveragepy
@@ -98,4 +99,4 @@ class Differ:
                 data[fil] = [None, self.second.data[fil]]
             elif mode == '-':
                 data[fil] = [self.first.data[fil], None]
-        return data
+        return collections.OrderedDict(sorted(data.items()))
