@@ -28,8 +28,10 @@ class Differ:
         self.second = self.guess_type(self.prepare(second))
         assert type(self.first) == type(self.second), \
           "Type of first and second report does not match"
-        self.header = ['filename'] + self.first.header
+        self.header = ['where'] + self.first.header
         self.meaning = [None] + self.first.meaning
+        assert len(self.header) == len(self.meaning), \
+          "Header and meaning provided by report type does not match"
 
     def __str__(self):
         return "CoCoCo differ for %s (%s) and %s (%s)" \
