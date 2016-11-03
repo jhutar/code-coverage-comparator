@@ -24,4 +24,4 @@ class JaCoCo(object):
         # Transform the data to our format
         for item in all_data[1:]:
             identifier = "%s / %s / %s" % tuple(item[:3])
-            self.data[identifier] = item[3:]
+            self.data[identifier] = [int(i) for i in item[3:]]
